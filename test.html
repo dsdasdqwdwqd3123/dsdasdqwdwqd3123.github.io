@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Помощник Minesweeper</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f3f4f6;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            color: #4a90e2;
+            margin-bottom: 20px;
+        }
+        .control-panel {
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #e1e5f2;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(5, 60px);
+            gap: 5px;
+            justify-content: center;
+            margin-top: 20px;
+            padding: 10px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .cell {
+            width: 60px;
+            height: 60px;
+            background-color: #cfd8dc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+            font-size: 24px;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+        .cell.safe {
+            background-color: #a5d6a7;
+        }
+        .cell:hover {
+            background-color: #b0bec5;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #ffffff;
+            background-color: #4a90e2;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #357ab8;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Помощник Minesweeper</h1>
+<div class="control-panel">
+    <label for="mine-count">Выберите количество мин (от 1 до 7): </label>
+    <input type="number" id="mine-count" min="1" max="7" value="3">
+    <button onclick="generateBoard()">Генерировать поле</button>
+</div>
+
+<div class="game-board" id="game-board"></div>
+
+<script>
+    const boardSize = 5;
+
+    function generateBoard() {
+        const mineCount = parseInt(document.getElementById('mine-count').value);
+        const minePositions = generateMinePositions(mineCount);
+        const safeCells = findSafeCells(minePositions);
+
+        const board = document.getElementById('game-board');
+        board.innerHTML = '';
+
+        for (let i = 0; i < boardSize * boardSize; i++) {
+            const cell = document.createElement('div');
+            cell.className = 'cell';
+            
+            if (safeCells.includes(i)) {
+                cell.classList.add('safe');
+                cell.textContent = '✔️';
+            }
+            
+            board.appendChild(cell);
+        }
+    }
+
+    function generateMinePositions(mineCount) {
+        const positions = new Set();
+        while (positions.size < mineCount) {
+            const pos = Math.floor(Math.random() * boardSize * boardSize);
+            positions.add(pos);
+        }
+        return Array.from(positions);
+    }
+
+    function findSafeCells(minePositions) {
+        const safeCells = [];
+        
+        for (let i = 0; i < boardSize * boardSize; i++) {
+            if (!minePositions.includes(i)) {
+                const neighbors = getNeighboringCells(i);
+                const isSafe = neighbors.every(neigh => !minePositions.includes(neigh));
+                if (isSafe) safeCells.push(i);
+            }
+        }
+        
+        return safeCells;
+    }
+
+    function getNeighboringCells(index) {
+        const neighbors = [];
+        const row = Math.floor(index / boardSize);
+        const col = index % boardSize;
+
+        for (let i = -1; i <= 1; i++) {
+            for (let j = -1; j <= 1; j++) {
+                if (i === 0 && j === 0) continue;
+                const newRow = row + i;
+                const newCol = col + j;
+                if (newRow >= 0 && newRow < boardSize && newCol >= 0 && newCol < boardSize) {
+                    neighbors.push(newRow * boardSize + newCol);
+                }
+            }
+        }
+
+        return neighbors;
+    }
+</script>
+
+</body>
+</html>

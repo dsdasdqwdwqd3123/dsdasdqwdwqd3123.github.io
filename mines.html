@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI HACK - Mines</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            color: #e0e0e0;
+            text-align: center;
+            padding-top: 20px;
+            background-color: #121212;
+            overflow-x: hidden;
+        }
+
+        h2 {
+            color: #ffde59;
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+
+        .button {
+            padding: 8px 16px;
+            font-size: 1em;
+            background: linear-gradient(135deg, #ff6b6b, #ffde59);
+            border: none;
+            color: white;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.3s;
+            margin-bottom: 15px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(255, 110, 110, 0.5);
+        }
+
+        .button:hover {
+            transform: scale(1.05);
+            background: linear-gradient(135deg, #fcb045, #ffde59);
+        }
+
+        .selector {
+            margin-bottom: 15px;
+        }
+
+        .selector label {
+            font-size: 1em;
+            margin-right: 8px;
+            color: #ffde59;
+        }
+
+        .selector select {
+            padding: 6px;
+            font-size: 0.9em;
+            border: 2px solid #ffde59;
+            border-radius: 8px;
+            background-color: #1b1f24;
+            color: #ffde59;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-gap: 6px;
+            justify-content: center;
+            padding: 8px;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 320px;
+            margin: 15px auto;
+            display: none;
+            backdrop-filter: blur(4px);
+        }
+
+        .cell {
+            width: 100%;
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s, background 0.3s;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 6px;
+            box-shadow: 0 3px 8px rgba(255, 255, 255, 0.1);
+        }
+
+        .cell img {
+            width: 90%;
+            height: 90%;
+        }
+
+        .cell:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .waiting-text {
+            font-size: 1em;
+            color: #ffde59;
+            margin-bottom: 12px;
+            display: none;
+            animation: fade-in-out 1.5s ease-in-out infinite;
+        }
+
+        @keyframes fade-in-out {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        @media (max-width: 480px) {
+            h2 {
+                font-size: 1.5em;
+            }
+
+            .button {
+                padding: 6px 12px;
+                font-size: 0.9em;
+            }
+
+            .selector label, .waiting-text {
+                font-size: 0.9em;
+            }
+
+            .selector select {
+                padding: 5px;
+                font-size: 0.85em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h2>MINES</h2>
+
+    <div class="selector">
+        <label for="mine-count">Выберите количество мин:</label>
+        <select id="mine-count">
+            <option value="1">1 мина</option>
+            <option value="3">3 мины</option>
+            <option value="5">5 мин</option>
+            <option value="7">7 мин</option>
+        </select>
+    </div>
+
+    <button onclick="generateMinesSignal()" class="button">Получить сигнал для Mines</button>
+    
+    <div id="waiting-text" class="waiting-text">Ждем результат...</div>
+    <div id="mines-signal-output" class="grid-container"></div>
+
+    <button onclick="goToMainMenu()" class="button">Вернуться в главное меню</button>
+
+    <script>
+        function generateMinesSignal() {
+            const output = document.getElementById('mines-signal-output');
+            const waitingText = document.getElementById('waiting-text');
+            const mineCount = parseInt(document.getElementById('mine-count').value);
+
+            const winCellsByMines = { 1: 6, 3: 5, 5: 3, 7: 1 };
+            const winCellsCount = winCellsByMines[mineCount];
+
+            waitingText.style.display = 'block';
+            output.style.display = 'none';
+            output.innerHTML = '';
+
+            setTimeout(() => {
+                waitingText.style.display = 'none';
+                output.style.display = 'grid';
+
+                const totalCells = 25;
+                let cells = Array(totalCells).fill('normal');
+
+                let selectedWinCells = 0;
+                while (selectedWinCells < winCellsCount) {
+                    const randomIndex = Math.floor(Math.random() * totalCells);
+                    if (cells[randomIndex] === 'normal') {
+                        cells[randomIndex] = 'win';
+                        selectedWinCells++;
+                    }
+                }
+
+                for (let i = 0; i < totalCells; i++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+
+                    const img = document.createElement('img');
+                    img.src = cells[i] === 'win' ? 'images/win_cell.png' : 'images/normal_cell.png';
+                    img.alt = cells[i] === 'win' ? 'Выигрыш' : 'Обычная клетка';
+
+                    cell.appendChild(img);
+                    output.appendChild(cell);
+                }
+            }, 2000);
+        }
+
+        function goToMainMenu() {
+            window.location.href = 'index.html'; // Ссылка на главный экран
+        }
+    </script>
+</body>
+</html>

@@ -29,6 +29,13 @@
             text-shadow: 0px 0px 8px rgba(255, 51, 51, 0.8);
         }
 
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 15px;
+        }
+
         .get-signal-btn, .go-to-main-menu-btn {
             background-color: #ff3333;
             color: #fff;
@@ -39,7 +46,6 @@
             cursor: pointer;
             box-shadow: 0px 6px 12px rgba(255, 51, 51, 0.4);
             transition: background-color 0.3s, transform 0.3s;
-            margin-top: 5px;
             margin-bottom: 10px;
         }
 
@@ -129,13 +135,15 @@
     </div>
 
     <h1>Lucky Jet Signal</h1>
-    <button class="get-signal-btn" onclick="generateSignal()">Получить сигнал</button>
+    
+    <div class="button-container">
+        <button class="get-signal-btn" onclick="generateSignal()">Получить сигнал</button>
+        <button class="go-to-main-menu-btn" onclick="goToMainMenu()">Вернуться в главное меню</button>
+    </div>
     
     <div class="signal-output" id="signalOutput">0.00x</div>
     <div class="waiting-text" id="waitingText">Ожидаем сигнал</div>
     <div class="warning-text">Не работает на демо счете <br>(играем за свой баланс)</div>
-
-    <button class="go-to-main-menu-btn" onclick="goToMainMenu()">Вернуться в главное меню</button>
 
     <script>
         function generateSignal() {

@@ -29,7 +29,7 @@
             text-shadow: 0px 0px 8px rgba(255, 51, 51, 0.8);
         }
 
-        .get-signal-btn {
+        .get-signal-btn, .go-to-main-menu-btn {
             background-color: #ff3333;
             color: #fff;
             padding: 12px 20px;
@@ -43,7 +43,7 @@
             margin-bottom: 10px;
         }
 
-        .get-signal-btn:hover {
+        .get-signal-btn:hover, .go-to-main-menu-btn:hover {
             background-color: #ff6666;
             transform: translateY(-3px);
         }
@@ -97,7 +97,7 @@
                 font-size: 1.6em;
             }
 
-            .get-signal-btn {
+            .get-signal-btn, .go-to-main-menu-btn {
                 font-size: 0.9em;
                 padding: 10px 16px;
             }
@@ -130,10 +130,12 @@
 
     <h1>Lucky Jet Signal</h1>
     <button class="get-signal-btn" onclick="generateSignal()">Получить сигнал</button>
-
+    
     <div class="signal-output" id="signalOutput">0.00x</div>
     <div class="waiting-text" id="waitingText">Ожидаем сигнал</div>
     <div class="warning-text">Не работает на демо счете <br>(играем за свой баланс)</div>
+
+    <button class="go-to-main-menu-btn" onclick="goToMainMenu()">Вернуться в главное меню</button>
 
     <script>
         function generateSignal() {
@@ -152,14 +154,13 @@
                 let randomSignal;
                 const randomValue = Math.random() * 100;
 
-                if (randomValue <= 65) {
+                // Уменьшаем вероятность выпадения высоких множителей
+                if (randomValue <= 70) {  // 70% шанс на множитель до 4.5x
                     randomSignal = (Math.random() * 4.5).toFixed(2) + 'x';
-                } else if (randomValue <= 85) {
+                } else if (randomValue <= 90) {  // 20% шанс на множитель от 4.5x до 7.57x
                     randomSignal = (Math.random() * (7.57 - 4.5) + 4.5).toFixed(2) + 'x';
-                } else if (randomValue <= 98) {
+                } else {  // 10% шанс на множитель от 7.57x до 25x
                     randomSignal = (Math.random() * (25 - 7.57) + 7.57).toFixed(2) + 'x';
-                } else {
-                    randomSignal = (Math.random() * (850 - 25) + 25).toFixed(2) + 'x';
                 }
 
                 waitingText.style.opacity = '0';
@@ -170,6 +171,10 @@
 
                 document.querySelector('.get-signal-btn').disabled = false;
             }, 2000);
+        }
+
+        function goToMainMenu() {
+            window.location.href = 'index.html'; // Ссылка на главный экран
         }
     </script>
 

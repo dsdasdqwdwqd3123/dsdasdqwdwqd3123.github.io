@@ -71,6 +71,7 @@
             transition: background-color 0.3s ease;
             width: 100%;  /* Кнопка на всю ширину */
             max-width: 240px;  /* Ограничиваем максимальную ширину кнопки */
+            margin-bottom: 10px; /* Добавим отступ между кнопками */
         }
 
         button:hover {
@@ -143,6 +144,7 @@
     </div>
     <div class="btn-container">
         <button onclick="getSignal()">Получить сигнал</button>
+        <button onclick="goToMainMenu()">Вернуться в главное меню</button>
     </div>
     <div id="status" class="status">Ожидаем сигнал...</div>
     
@@ -178,6 +180,11 @@
             // Изменяем статус на "Сигнал получен"
             status.innerText = 'Сигнал получен!';
         }, 2000);
+    }
+
+    // Функция для возврата на главную страницу
+    function goToMainMenu() {
+        window.location.href = 'index.html'; // Ссылка на главный экран
     }
 </script>
 

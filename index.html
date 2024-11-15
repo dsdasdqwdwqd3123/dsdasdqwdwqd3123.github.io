@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rich Ai Signal - Game Signals</title>
+    <title>Rich Ai Signal - Сигналы для игр</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        /* General styles */
+        /* Основные стили */
         body {
             margin: 0;
             padding: 0;
@@ -17,38 +17,37 @@
             justify-content: center;
             font-family: 'Poppins', sans-serif;
             overflow: hidden;
-            background-color: #ffebf2; /* Pinkish background */
             color: #fff;
         }
 
-        /* Animated background */
+        /* Плавающий анимированный фон */
         .animated-background {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #f8d7dc, #ffd1e6, #f8d7dc);
+            background: linear-gradient(135deg, #141414, #1a1a1a, #2a2a2a, #1a1a1a);
             background-size: 200% 200%;
             animation: backgroundAnimation 10s ease infinite;
             z-index: -1;
         }
 
-        /* Animation for background */
+        /* Анимация для фона */
         @keyframes backgroundAnimation {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
 
-        /* Title with glowing effect */
+        /* Заголовок с красным цветом и сиянием */
         h1 {
-            color: #ff4f85;
-            font-size: 3.5em;
+            color: #ff3333; 
+            font-size: 4em;
             margin-bottom: 20px;
             text-align: center;
             font-weight: 600;
-            text-shadow: 0 0 10px rgba(255, 79, 133, 0.8), 0 0 20px rgba(255, 79, 133, 0.5);
+            text-shadow: 0 0 10px rgba(255, 51, 51, 0.8), 0 0 20px rgba(255, 51, 51, 0.5);
             z-index: 1;
             transition: transform 0.3s;
         }
@@ -58,82 +57,80 @@
         }
 
         p {
-            font-size: 1.1em;
+            font-size: 1.3em;
             color: #ddd;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
             text-align: center;
             z-index: 1;
         }
 
-        /* Game container */
+        /* Контейнер для игр */
         .game-container {
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 15px;
             z-index: 1;
             padding: 0 10px;
         }
 
-        /* Game links with transparency and blur effects */
+        /* Ссылки на игры с прозрачностью и блюром */
         .game-link {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 10px;
-            width: 160px;
-            height: 220px;
+            padding: 20px;
+            width: 180px;
+            height: 240px;
             background: rgba(42, 45, 52, 0.3);
             backdrop-filter: blur(8px);
-            border-radius: 15px;
+            border-radius: 20px;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
             text-decoration: none;
             color: white;
-            font-size: 1.1em;
+            font-size: 1.2em;
             text-align: center;
             transition: transform 0.3s, box-shadow 0.3s;
             cursor: pointer;
             position: relative;
         }
 
-        /* Hover effects */
+        /* Анимации при наведении */
         .game-link:hover {
-            transform: translateY(-8px) scale(1.05);
+            transform: translateY(-10px) scale(1.05);
             box-shadow: 0 12px 20px rgba(0, 0, 0, 0.6);
         }
 
         .game-link img {
             width: 100%;
-            height: 120px;
-            border-radius: 12px;
-            margin-bottom: 12px;
+            height: 140px;
+            border-radius: 15px;
+            margin-bottom: 15px;
             object-fit: cover;
             transition: transform 0.3s ease;
-            z-index: 1; /* Ensure image is on top of background but below the "hit" tag */
         }
 
-        /* Titles in game links */
+        /* Заголовки в ссылках */
         .game-link h2 {
             color: #ffde59;
-            font-size: 1.3em;
+            font-size: 1.4em;
             font-weight: 600;
             transition: transform 0.3s ease;
-            z-index: 2; /* Ensure the title is on top of the image */
         }
 
-        /* Hover effects on images and titles */
+        /* Эффекты при наведении */
         .game-link:hover img {
-            transform: scale(1.05);
+            transform: scale(1.1);
         }
 
         .game-link:hover h2 {
             transform: translateY(-5px);
         }
 
-        /* Tagline */
+        /* Текст с тегом под разделами */
         .tagline {
-            margin-top: 40px;
-            font-size: 1em;
+            margin-top: 50px;
+            font-size: 1.1em;
             color: rgba(255, 255, 255, 0.7); 
             text-align: center;
             z-index: 1;
@@ -142,41 +139,39 @@
             opacity: 0.8;
         }
 
-        /* "Hot" tag style */
+        /* Новая надпись "Хит" */
         .hit-tag {
             position: absolute;
             top: 5px;
             right: 5px;
             padding: 5px 10px;
-            background: linear-gradient(135deg, #ff4f85, #ff80bf);
+            background: linear-gradient(135deg, #ff3333, #ff5e5e);
             border-radius: 20px;
-            font-size: 0.85em;
+            font-size: 0.9em;
             font-weight: bold;
             color: white;
             text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
-            z-index: 3; /* Ensure the "Hot" tag is above all other elements */
         }
 
-        /* Responsive styles for smaller screens */
+        /* Адаптивные стили для телефонов */
         @media (max-width: 768px) {
             h1 {
                 font-size: 2.8em;
             }
 
             p {
-                font-size: 1em;
-                margin-bottom: 20px;
+                font-size: 1.1em;
+                margin-bottom: 25px;
             }
 
             .game-link {
                 width: 150px;
                 height: 200px;
-                padding: 15px;
             }
 
             .game-container {
-                gap: 15px;
+                gap: 10px;
             }
 
             .game-link img {
@@ -184,11 +179,11 @@
             }
 
             .tagline {
-                font-size: 0.9em;
+                font-size: 1em;
             }
 
             .hit-tag {
-                font-size: 0.75em;
+                font-size: 0.8em;
                 top: 5px;
                 right: 5px;
             }
@@ -201,13 +196,13 @@
 
             p {
                 font-size: 1em;
-                margin-bottom: 15px;
+                margin-bottom: 20px;
             }
 
             .game-link {
                 width: 130px;
                 height: 180px;
-                padding: 10px;
+                padding: 15px;
             }
 
             .game-link img {
@@ -215,7 +210,7 @@
             }
 
             .tagline {
-                font-size: 0.85em;
+                font-size: 0.9em;
                 opacity: 0.7;
             }
 
@@ -231,11 +226,11 @@
     <div class="animated-background"></div>
 
     <h1>Rich Ai Signal</h1>
-    <p>Select a game to get the signal:</p>
+    <p>Выберите игру для получения сигнала:</p>
 
     <div class="game-container">
         <div onclick="openGameWindow('mines.html')" class="game-link">
-            <div class="hit-tag">Hot</div>
+            <div class="hit-tag">Хит</div>
             <img src="images/mines.jpg" alt="Mines">
             <h2>Mines</h2>
         </div>

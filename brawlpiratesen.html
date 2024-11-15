@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brawl Pirates - Get Signal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+            color: #fff;
+            background-color: #141414;
+        }
+
+        .animated-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #141414, #1a1a1a, #2a2a2a, #1a1a1a);
+            background-size: 200% 200%;
+            animation: backgroundAnimation 10s ease infinite;
+            z-index: -1;
+        }
+
+        @keyframes backgroundAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .game-container {
+            text-align: center;
+            padding: 20px;
+            border-radius: 15px;
+            background-color: rgba(0, 0, 0, 0.7);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);
+            width: 280px;
+            max-width: 100%;
+        }
+
+        h1 {
+            font-size: 2.2em;
+            margin-bottom: 15px;
+            color: #ff4f70;
+            text-shadow: 0 0 10px rgba(255, 51, 51, 0.8), 0 0 20px rgba(255, 51, 51, 0.5);
+        }
+
+        .skull-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            gap: 3px;
+            flex-wrap: wrap;
+        }
+
+        .skull {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #444;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+            transition: transform 0.3s ease;
+        }
+
+        .btn-container {
+            margin-top: 15px;
+        }
+
+        button {
+            background-color: #ff4f70;
+            color: white;
+            font-size: 1em;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            max-width: 240px;
+            margin-bottom: 10px;
+        }
+
+        button:hover {
+            background-color: #ff5e5e;
+        }
+
+        .status {
+            font-size: 1.2em;
+            color: #ffde59;
+            margin-top: 10px;
+            font-weight: bold;
+            visibility: hidden;
+        }
+
+        .footer-note {
+            margin-top: 20px;
+            font-size: 1em;
+            color: rgba(255, 255, 255, 0.7);
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        }
+
+        @media (max-width: 600px) {
+            .game-container {
+                width: 80%;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .skull {
+                width: 50px;
+                height: 50px;
+            }
+
+            button {
+                font-size: 0.9em;
+                padding: 8px 16px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            h1 {
+                font-size: 1.6em;
+            }
+
+            .skull {
+                width: 40px;
+                height: 40px;
+            }
+
+            button {
+                font-size: 0.8em;
+                padding: 7px 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-background"></div>
+    <div class="game-container">
+        <h1>Brawl Pirates</h1>
+        <div class="skull-container">
+            <div id="skull1" class="skull"><img src="images/skull1.png" alt="Skull 1" width="50" height="50"></div>
+            <div id="skull2" class="skull"><img src="images/skull2.png" alt="Skull 2" width="50" height="50"></div>
+            <div id="skull3" class="skull"><img src="images/skull3.png" alt="Skull 3" width="50" height="50"></div>
+        </div>
+        <div class="btn-container">
+            <button onclick="getSignal()">Get Signal</button>
+            <button onclick="goToMainMenu()">Return to Main Menu</button>
+        </div>
+        <div id="status" class="status">Waiting for signal...</div>
+    </div>
+
+    <script>
+        function getSignal() {
+            const skulls = document.querySelectorAll('.skull');
+            const status = document.getElementById('status');
+            const winnerIndex = Math.floor(Math.random() * 3);
+
+            status.style.visibility = 'visible';
+            status.innerText = 'Waiting for signal...';
+
+            setTimeout(function() {
+                skulls.forEach((skull, index) => {
+                    const img = skull.querySelector('img');
+                    img.src = `images/skull${index + 1}.png`;
+                });
+
+                const winnerSkull = skulls[winnerIndex].querySelector('img');
+                winnerSkull.src = 'images/winner-skull.png';
+
+                status.innerText = 'Signal received!';
+            }, 2000);
+        }
+
+        function goToMainMenu() {
+            window.location.href = 'indexen.html';
+        }
+    </script>
+</body>
+</html>

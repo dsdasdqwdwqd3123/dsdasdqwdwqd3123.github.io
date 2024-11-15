@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI HACK - Mines</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+            color: #fff;
+            background-color: #141414;
+        }
+
+        .animated-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #141414, #1a1a1a, #2a2a2a, #1a1a1a);
+            background-size: 200% 200%;
+            animation: backgroundAnimation 10s ease infinite;
+            z-index: -1;
+        }
+
+        @keyframes backgroundAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        h2 {
+            color: #ff66b2;
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 600;
+            text-shadow: 0 0 10px rgba(255, 51, 51, 0.8), 0 0 20px rgba(255, 51, 51, 0.5);
+        }
+
+        .button {
+            padding: 10px 20px;
+            font-size: 1em;
+            background: linear-gradient(135deg, #ff6b6b, #ff66b2);
+            border: none;
+            color: white;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.3s;
+            margin-bottom: 10px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(255, 110, 110, 0.5);
+        }
+
+        .button:hover {
+            transform: scale(1.05);
+            background: linear-gradient(135deg, #ff66b2, #ff6b6b);
+        }
+
+        .selector {
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .selector label {
+            font-size: 1em;
+            color: #ff66b2;
+        }
+
+        .selector select {
+            padding: 6px;
+            font-size: 0.9em;
+            border: 2px solid #ff6b6b;
+            border-radius: 8px;
+            background-color: #4a2a4a;
+            color: #ff66b2;
+            margin-top: 5px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+            grid-gap: 6px;
+            justify-content: center;
+            padding: 8px;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            width: 90%;
+            max-width: 320px;
+            margin: 15px auto;
+            backdrop-filter: blur(4px);
+        }
+
+        .cell {
+            width: 100%;
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s, background 0.3s;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 6px;
+            box-shadow: 0 3px 8px rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+        }
+
+        .cell img {
+            width: 90%;
+            height: 90%;
+        }
+
+        .waiting-text {
+            font-size: 0.9em;
+            color: #ff66b2;
+            margin-bottom: 12px;
+            display: none;
+            animation: fade-in-out 1.5s ease-in-out infinite;
+        }
+
+        @keyframes fade-in-out {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        @media (max-width: 480px) {
+            h2 {
+                font-size: 1.8em;
+            }
+
+            .button {
+                padding: 8px 16px;
+                font-size: 0.9em;
+            }
+
+            .selector label {
+                font-size: 0.9em;
+            }
+
+            .selector select {
+                font-size: 0.85em;
+            }
+
+            .grid-container {
+                grid-gap: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-background"></div>
+    <h2>MINES</h2>
+
+    <div class="selector">
+        <label for="mine-count">Select the number of mines:</label><br>
+        <select id="mine-count">
+            <option value="1">1 mine</option>
+            <option value="3">3 mines</option>
+            <option value="5">5 mines</option>
+            <option value="7">7 mines</option>
+        </select>
+    </div>
+
+    <button onclick="generateMinesSignal()" class="button">Get Signal for Mines</button>
+    <div id="waiting-text" class="waiting-text">Waiting for result...</div>
+    <div id="mines-signal-output" class="grid-container"></div>
+    <button onclick="goToMainMenu()" class="button">Go Back to Main Menu</button>
+
+    <script>
+        function generateMinesSignal() {
+            const output = document.getElementById('mines-signal-output');
+            const waitingText = document.getElementById('waiting-text');
+            const mineCount = parseInt(document.getElementById('mine-count').value);
+
+            const winCellsByMines = { 1: 6, 3: 5, 5: 3, 7: 1 };
+            const winCellsCount = winCellsByMines[mineCount];
+
+            waitingText.style.display = 'block';
+
+            setTimeout(() => {
+                waitingText.style.display = 'none';
+
+                const totalCells = 25;
+                let cells = Array(totalCells).fill('normal');
+
+                let selectedWinCells = 0;
+                while (selectedWinCells < winCellsCount) {
+                    const randomIndex = Math.floor(Math.random() * totalCells);
+                    if (cells[randomIndex] === 'normal') {
+                        cells[randomIndex] = 'win';
+                        selectedWinCells++;
+                    }
+                }
+
+                const cellElements = output.querySelectorAll('.cell');
+                cells.forEach((cellType, index) => {
+                    const cell = cellElements[index];
+                    cell.className = `cell ${cellType}`;
+                    const img = cell.querySelector('img');
+                    img.src = cellType === 'win' ? 'images/win_cell.png' : 'images/normal_cell.png';
+                });
+            }, 2000);
+        }
+
+        function goToMainMenu() {
+            window.location.href = 'indexen.html';
+        }
+
+        const output = document.getElementById('mines-signal-output');
+        for (let i = 0; i < 25; i++) {
+            const cell = document.createElement('div');
+            cell.className = 'cell normal';
+            const img = document.createElement('img');
+            img.src = 'images/normal_cell.png';
+            img.alt = 'Normal cell';
+            cell.appendChild(img);
+            output.appendChild(cell);
+        }
+    </script>
+</body>
+</html>

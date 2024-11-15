@@ -9,24 +9,41 @@
         body {
             margin: 0;
             padding: 0;
+            height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
             font-family: 'Poppins', sans-serif;
-            background-color: #121212;
-            color: #ffffff;
             overflow: hidden;
-            position: relative;
+            color: #fff;
+            background-color: #141414;
+        }
+
+        .animated-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #141414, #1a1a1a, #2a2a2a, #1a1a1a);
+            background-size: 200% 200%;
+            animation: backgroundAnimation 10s ease infinite;
+            z-index: -1;
+        }
+
+        @keyframes backgroundAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         h1 {
             font-size: 2em;
-            color: #ff3333;
+            color: #ff4f70;
             text-align: center;
             margin-top: 5px;
-            text-shadow: 0px 0px 8px rgba(255, 51, 51, 0.8);
+            text-shadow: 0px 0px 8px rgba(255, 79, 112, 0.8);
         }
 
         .button-container {
@@ -37,20 +54,20 @@
         }
 
         .get-signal-btn, .go-to-main-menu-btn {
-            background-color: #ff3333;
+            background-color: #ff4f70;
             color: #fff;
             padding: 12px 20px;
             font-size: 1em;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            box-shadow: 0px 6px 12px rgba(255, 51, 51, 0.4);
+            box-shadow: 0px 6px 12px rgba(255, 79, 112, 0.4);
             transition: background-color 0.3s, transform 0.3s;
             margin-bottom: 10px;
         }
 
         .get-signal-btn:hover, .go-to-main-menu-btn:hover {
-            background-color: #ff6666;
+            background-color: #ff7f9e;
             transform: translateY(-3px);
         }
 
@@ -97,7 +114,6 @@
             margin-top: 10px;
         }
 
-        /* Мобильная оптимизация */
         @media (max-width: 480px) {
             h1 {
                 font-size: 1.6em;
@@ -129,7 +145,7 @@
     </style>
 </head>
 <body>
-
+    <div class="animated-background"></div>
     <div class="rocket-container">
         <img src="rocket.png" alt="Rocket" class="rocket" id="rocket">
     </div>
@@ -143,7 +159,6 @@
     
     <div class="signal-output" id="signalOutput">0.00x</div>
     <div class="waiting-text" id="waitingText">Ожидаем сигнал</div>
-    <div class="warning-text">Не работает на демо счете <br>(играем за свой баланс)</div>
 
     <script>
         function generateSignal() {
@@ -162,12 +177,11 @@
                 let randomSignal;
                 const randomValue = Math.random() * 100;
 
-                // Уменьшаем вероятность выпадения высоких множителей
-                if (randomValue <= 70) {  // 70% шанс на множитель до 4.5x
+                if (randomValue <= 70) {
                     randomSignal = (Math.random() * 4.5).toFixed(2) + 'x';
-                } else if (randomValue <= 90) {  // 20% шанс на множитель от 4.5x до 7.57x
+                } else if (randomValue <= 90) {
                     randomSignal = (Math.random() * (7.57 - 4.5) + 4.5).toFixed(2) + 'x';
-                } else {  // 10% шанс на множитель от 7.57x до 25x
+                } else {
                     randomSignal = (Math.random() * (25 - 7.57) + 7.57).toFixed(2) + 'x';
                 }
 
@@ -182,7 +196,7 @@
         }
 
         function goToMainMenu() {
-            window.location.href = 'index.html'; // Ссылка на главный экран
+            window.location.href = 'index.html';
         }
     </script>
 

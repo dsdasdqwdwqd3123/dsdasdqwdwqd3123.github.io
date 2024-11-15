@@ -8,61 +8,87 @@
     <style>
         body {
             margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             font-family: 'Poppins', sans-serif;
-            color: #e0e0e0;
-            text-align: center;
-            padding-top: 20px;
-            background-color: #121212;
-            overflow-x: hidden;
+            overflow: hidden;
+            color: #fff;
+            background-color: #141414;
+        }
+
+        .animated-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #141414, #1a1a1a, #2a2a2a, #1a1a1a);
+            background-size: 200% 200%;
+            animation: backgroundAnimation 10s ease infinite;
+            z-index: -1;
+        }
+
+        @keyframes backgroundAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         h2 {
-            color: #ffde59;
-            font-size: 1.8em;
+            color: #ff66b2;
+            font-size: 2.5em;
             margin-bottom: 15px;
+            text-align: center;
+            font-weight: 600;
+            text-shadow: 0 0 10px rgba(255, 51, 51, 0.8), 0 0 20px rgba(255, 51, 51, 0.5);
         }
 
         .button {
-            padding: 8px 16px;
+            padding: 10px 20px;
             font-size: 1em;
-            background: linear-gradient(135deg, #ff6b6b, #ffde59);
+            background: linear-gradient(135deg, #ff6b6b, #ff66b2);
             border: none;
             color: white;
             border-radius: 12px;
             cursor: pointer;
             transition: transform 0.2s, background 0.3s;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             font-weight: 600;
             box-shadow: 0 4px 15px rgba(255, 110, 110, 0.5);
         }
 
         .button:hover {
             transform: scale(1.05);
-            background: linear-gradient(135deg, #fcb045, #ffde59);
+            background: linear-gradient(135deg, #ff66b2, #ff6b6b);
         }
 
         .selector {
             margin-bottom: 15px;
+            text-align: center;
         }
 
         .selector label {
             font-size: 1em;
-            margin-right: 8px;
-            color: #ffde59;
+            color: #ff66b2;
         }
 
         .selector select {
             padding: 6px;
             font-size: 0.9em;
-            border: 2px solid #ffde59;
+            border: 2px solid #ff6b6b;
             border-radius: 8px;
-            background-color: #1b1f24;
-            color: #ffde59;
+            background-color: #4a2a4a;
+            color: #ff66b2;
+            margin-top: 5px;
         }
 
         .grid-container {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
             grid-gap: 6px;
             justify-content: center;
             padding: 8px;
@@ -70,10 +96,9 @@
             border-radius: 8px;
             background: rgba(255, 255, 255, 0.1);
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            width: 100%;
+            width: 90%;
             max-width: 320px;
             margin: 15px auto;
-            display: none;
             backdrop-filter: blur(4px);
         }
 
@@ -87,6 +112,7 @@
             background: rgba(255, 255, 255, 0.15);
             border-radius: 6px;
             box-shadow: 0 3px 8px rgba(255, 255, 255, 0.1);
+            overflow: hidden;
         }
 
         .cell img {
@@ -94,14 +120,9 @@
             height: 90%;
         }
 
-        .cell:hover {
-            transform: scale(1.05);
-            background: rgba(255, 255, 255, 0.3);
-        }
-
         .waiting-text {
-            font-size: 1em;
-            color: #ffde59;
+            font-size: 0.9em;
+            color: #ff66b2;
             margin-bottom: 12px;
             display: none;
             animation: fade-in-out 1.5s ease-in-out infinite;
@@ -114,30 +135,34 @@
 
         @media (max-width: 480px) {
             h2 {
-                font-size: 1.5em;
+                font-size: 1.8em;
             }
 
             .button {
-                padding: 6px 12px;
+                padding: 8px 16px;
                 font-size: 0.9em;
             }
 
-            .selector label, .waiting-text {
+            .selector label {
                 font-size: 0.9em;
             }
 
             .selector select {
-                padding: 5px;
                 font-size: 0.85em;
+            }
+
+            .grid-container {
+                grid-gap: 4px;
             }
         }
     </style>
 </head>
 <body>
+    <div class="animated-background"></div>
     <h2>MINES</h2>
 
     <div class="selector">
-        <label for="mine-count">Выберите количество мин:</label>
+        <label for="mine-count">Выберите количество мин:</label><br>
         <select id="mine-count">
             <option value="1">1 мина</option>
             <option value="3">3 мины</option>
@@ -147,10 +172,8 @@
     </div>
 
     <button onclick="generateMinesSignal()" class="button">Получить сигнал для Mines</button>
-    
     <div id="waiting-text" class="waiting-text">Ждем результат...</div>
     <div id="mines-signal-output" class="grid-container"></div>
-
     <button onclick="goToMainMenu()" class="button">Вернуться в главное меню</button>
 
     <script>
@@ -163,12 +186,9 @@
             const winCellsCount = winCellsByMines[mineCount];
 
             waitingText.style.display = 'block';
-            output.style.display = 'none';
-            output.innerHTML = '';
 
             setTimeout(() => {
                 waitingText.style.display = 'none';
-                output.style.display = 'grid';
 
                 const totalCells = 25;
                 let cells = Array(totalCells).fill('normal');
@@ -182,22 +202,29 @@
                     }
                 }
 
-                for (let i = 0; i < totalCells; i++) {
-                    const cell = document.createElement('div');
-                    cell.className = 'cell';
-
-                    const img = document.createElement('img');
-                    img.src = cells[i] === 'win' ? 'images/win_cell.png' : 'images/normal_cell.png';
-                    img.alt = cells[i] === 'win' ? 'Выигрыш' : 'Обычная клетка';
-
-                    cell.appendChild(img);
-                    output.appendChild(cell);
-                }
+                const cellElements = output.querySelectorAll('.cell');
+                cells.forEach((cellType, index) => {
+                    const cell = cellElements[index];
+                    cell.className = `cell ${cellType}`;
+                    const img = cell.querySelector('img');
+                    img.src = cellType === 'win' ? 'images/win_cell.png' : 'images/normal_cell.png';
+                });
             }, 2000);
         }
 
         function goToMainMenu() {
-            window.location.href = 'index.html'; // Ссылка на главный экран
+            window.location.href = 'index.html';
+        }
+
+        const output = document.getElementById('mines-signal-output');
+        for (let i = 0; i < 25; i++) {
+            const cell = document.createElement('div');
+            cell.className = 'cell normal';
+            const img = document.createElement('img');
+            img.src = 'images/normal_cell.png';
+            img.alt = 'Обычная клетка';
+            cell.appendChild(img);
+            output.appendChild(cell);
         }
     </script>
 </body>

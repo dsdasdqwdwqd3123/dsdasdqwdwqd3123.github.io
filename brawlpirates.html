@@ -7,32 +7,51 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             height: 100vh;
-            background: linear-gradient(135deg, #141414, #1a1a1a, #2a2a2a, #1a1a1a); /* Вернули фон с градиентом */
-            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Poppins', sans-serif;
             overflow: hidden;
+            color: #fff;
+            background-color: #141414;
+        }
+
+        .animated-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #141414, #1a1a1a, #2a2a2a, #1a1a1a);
+            background-size: 200% 200%;
+            animation: backgroundAnimation 10s ease infinite;
+            z-index: -1;
+        }
+
+        @keyframes backgroundAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .game-container {
             text-align: center;
             padding: 20px;
             border-radius: 15px;
-            background-color: rgba(0, 0, 0, 0.7); /* Темный фон контейнера */
+            background-color: rgba(0, 0, 0, 0.7);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);
-            width: 280px; /* Уменьшаем размер контейнера */
+            width: 280px;
             max-width: 100%;
         }
 
         h1 {
             font-size: 2.2em;
             margin-bottom: 15px;
-            color: #ff3333;
+            color: #ff4f70;
             text-shadow: 0 0 10px rgba(255, 51, 51, 0.8), 0 0 20px rgba(255, 51, 51, 0.5);
         }
 
@@ -40,12 +59,12 @@
             display: flex;
             justify-content: space-between;
             margin-bottom: 15px;
-            gap: 3px;  /* Уменьшаем промежутки между черепами */
+            gap: 3px;
             flex-wrap: wrap;
         }
 
         .skull {
-            width: 60px;  /* Уменьшаем размер черепков */
+            width: 60px;
             height: 60px;
             border-radius: 50%;
             background-color: #444;
@@ -61,7 +80,7 @@
         }
 
         button {
-            background-color: #ff3333;
+            background-color: #ff4f70;
             color: white;
             font-size: 1em;
             padding: 8px 16px;
@@ -69,9 +88,9 @@
             border-radius: 8px;
             cursor: pointer;
             transition: background-color 0.3s ease;
-            width: 100%;  /* Кнопка на всю ширину */
-            max-width: 240px;  /* Ограничиваем максимальную ширину кнопки */
-            margin-bottom: 10px; /* Добавим отступ между кнопками */
+            width: 100%;
+            max-width: 240px;
+            margin-bottom: 10px;
         }
 
         button:hover {
@@ -83,18 +102,16 @@
             color: #ffde59;
             margin-top: 10px;
             font-weight: bold;
-            visibility: hidden; /* Скрыть по умолчанию */
+            visibility: hidden;
         }
 
-        /* Стиль для подписи ниже */
         .footer-note {
             margin-top: 20px;
             font-size: 1em;
-            color: rgba(255, 255, 255, 0.7); /* Полупрозрачный белый */
+            color: rgba(255, 255, 255, 0.7);
             text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
         }
 
-        /* Медиа-запросы для мобильных устройств */
         @media (max-width: 600px) {
             .game-container {
                 width: 80%;
@@ -105,7 +122,7 @@
             }
 
             .skull {
-                width: 50px; /* Меньше черепки на мобильных */
+                width: 50px;
                 height: 50px;
             }
 
@@ -133,60 +150,46 @@
     </style>
 </head>
 <body>
-
-<div class="game-container">
-    <h1>Brawl Pirates</h1>
-    <div class="skull-container">
-        <!-- Используйте свои изображения черепов -->
-        <div id="skull1" class="skull"><img src="images/skull1.png" alt="Череп 1" width="50" height="50"></div>
-        <div id="skull2" class="skull"><img src="images/skull2.png" alt="Череп 2" width="50" height="50"></div>
-        <div id="skull3" class="skull"><img src="images/skull3.png" alt="Череп 3" width="50" height="50"></div>
+    <div class="animated-background"></div>
+    <div class="game-container">
+        <h1>Brawl Pirates</h1>
+        <div class="skull-container">
+            <div id="skull1" class="skull"><img src="images/skull1.png" alt="Череп 1" width="50" height="50"></div>
+            <div id="skull2" class="skull"><img src="images/skull2.png" alt="Череп 2" width="50" height="50"></div>
+            <div id="skull3" class="skull"><img src="images/skull3.png" alt="Череп 3" width="50" height="50"></div>
+        </div>
+        <div class="btn-container">
+            <button onclick="getSignal()">Получить сигнал</button>
+            <button onclick="goToMainMenu()">Вернуться в главное меню</button>
+        </div>
+        <div id="status" class="status">Ожидаем сигнал...</div>
     </div>
-    <div class="btn-container">
-        <button onclick="getSignal()">Получить сигнал</button>
-        <button onclick="goToMainMenu()">Вернуться в главное меню</button>
-    </div>
-    <div id="status" class="status">Ожидаем сигнал...</div>
-    
-    <!-- Подпись с прозрачностью -->
-    <div class="footer-note">
-        Не работает на демо счете (играем на реальный)
-    </div>
-</div>
 
-<script>
-    // Функция для запуска скрипта
-    function getSignal() {
-        const skulls = document.querySelectorAll('.skull'); // Получаем все элементы черепков
-        const status = document.getElementById('status'); // Статус (Ожидаем сигнал...)
-        const winnerIndex = Math.floor(Math.random() * 3); // Генерируем случайный индекс от 0 до 2
+    <script>
+        function getSignal() {
+            const skulls = document.querySelectorAll('.skull');
+            const status = document.getElementById('status');
+            const winnerIndex = Math.floor(Math.random() * 3);
 
-        // Показываем статус "Ожидаем сигнал..."
-        status.style.visibility = 'visible';
-        status.innerText = 'Ожидаем сигнал...';
+            status.style.visibility = 'visible';
+            status.innerText = 'Ожидаем сигнал...';
 
-        // Ждем 2 секунды (имитация ожидания)
-        setTimeout(function() {
-            // Заменяем изображения всех черепов на обычные
-            skulls.forEach((skull, index) => {
-                const img = skull.querySelector('img');
-                img.src = `images/skull${index + 1}.png`;  // Вставляем стандартные изображения
-            });
+            setTimeout(function() {
+                skulls.forEach((skull, index) => {
+                    const img = skull.querySelector('img');
+                    img.src = `images/skull${index + 1}.png`;
+                });
 
-            // Меняем изображение выигрышного черепа
-            const winnerSkull = skulls[winnerIndex].querySelector('img');
-            winnerSkull.src = 'images/winner-skull.png'; // Замените на свой файл для победителя
+                const winnerSkull = skulls[winnerIndex].querySelector('img');
+                winnerSkull.src = 'images/winner-skull.png';
 
-            // Изменяем статус на "Сигнал получен"
-            status.innerText = 'Сигнал получен!';
-        }, 2000);
-    }
+                status.innerText = 'Сигнал получен!';
+            }, 2000);
+        }
 
-    // Функция для возврата на главную страницу
-    function goToMainMenu() {
-        window.location.href = 'index.html'; // Ссылка на главный экран
-    }
-</script>
-
+        function goToMainMenu() {
+            window.location.href = 'index.html';
+        }
+    </script>
 </body>
 </html>

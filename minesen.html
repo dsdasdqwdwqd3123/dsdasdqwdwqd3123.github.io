@@ -88,7 +88,7 @@
 
         .grid-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+            grid-template-columns: repeat(5, 1fr); /* Fixed 5 columns */
             grid-gap: 6px;
             justify-content: center;
             padding: 8px;
@@ -96,15 +96,15 @@
             border-radius: 8px;
             background: rgba(255, 255, 255, 0.1);
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            width: 90%;
-            max-width: 320px;
+            width: 300px; /* Fixed width to maintain 5x5 grid */
+            height: 300px; /* Fixed height to maintain aspect ratio */
             margin: 15px auto;
             backdrop-filter: blur(4px);
         }
 
         .cell {
             width: 100%;
-            aspect-ratio: 1;
+            aspect-ratio: 1; /* Ensures cells are square */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -152,7 +152,8 @@
             }
 
             .grid-container {
-                grid-gap: 4px;
+                width: 250px; /* Slightly smaller width on smaller screens */
+                height: 250px; /* Maintain aspect ratio */
             }
         }
     </style>
@@ -162,7 +163,7 @@
     <h2>MINES</h2>
 
     <div class="selector">
-        <label for="mine-count">Select the number of mines:</label><br>
+        <label for="mine-count">Select number of mines:</label><br>
         <select id="mine-count">
             <option value="1">1 mine</option>
             <option value="3">3 mines</option>
@@ -171,10 +172,10 @@
         </select>
     </div>
 
-    <button onclick="generateMinesSignal()" class="button">Get Signal for Mines</button>
+    <button onclick="generateMinesSignal()" class="button">Get signal for Mines</button>
     <div id="waiting-text" class="waiting-text">Waiting for result...</div>
     <div id="mines-signal-output" class="grid-container"></div>
-    <button onclick="goToMainMenu()" class="button">Go Back to Main Menu</button>
+    <button onclick="goToMainMenu()" class="button">Go back to main menu</button>
 
     <script>
         function generateMinesSignal() {

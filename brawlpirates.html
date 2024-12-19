@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brawl Pirates - Получить сигнал</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Brawl Pirates - Get Signal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
@@ -14,10 +14,12 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Orbitron', sans-serif;
             overflow: hidden;
             color: #fff;
-            background-color: #141414;
+            background: url('images/phone.jpg') no-repeat center center fixed;
+            background-size: cover;
+            perspective: 1200px;
         }
 
         .animated-background {
@@ -26,40 +28,63 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #141414, #1a1a1a, #2a2a2a, #1a1a1a);
-            background-size: 200% 200%;
-            animation: backgroundAnimation 10s ease infinite;
-            z-index: -1;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: -2;
         }
 
-        @keyframes backgroundAnimation {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        .snow-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            background: #fff;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            opacity: 0.8;
+            pointer-events: none;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
         }
 
         .game-container {
             text-align: center;
-            padding: 20px;
-            border-radius: 15px;
-            background-color: rgba(0, 0, 0, 0.7);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);
-            width: 280px;
-            max-width: 100%;
+            padding: 30px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
+            width: 300px;
+            max-width: 90%;
         }
 
         h1 {
-            font-size: 2.2em;
-            margin-bottom: 15px;
-            color: #ff4f70;
-            text-shadow: 0 0 10px rgba(255, 51, 51, 0.8), 0 0 20px rgba(255, 51, 51, 0.5);
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #ff66b2;
+            text-shadow: 0 5px 10px rgba(255, 102, 178, 0.8);
+            letter-spacing: 2px;
         }
 
         .skull-container {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 15px;
-            gap: 3px;
+            margin-bottom: 20px;
+            gap: 5px;
             flex-wrap: wrap;
         }
 
@@ -67,58 +92,47 @@
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            background-color: #444;
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
             transition: transform 0.3s ease;
         }
 
-        .btn-container {
-            margin-top: 15px;
-        }
-
         button {
-            background-color: #ff4f70;
+            background-color: #ff66b2;
             color: white;
-            font-size: 1em;
-            padding: 8px 16px;
+            font-size: 1.1em;
+            padding: 10px 20px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.3s ease;
             width: 100%;
-            max-width: 240px;
+            max-width: 260px;
             margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         button:hover {
-            background-color: #ff5e5e;
+            background-color: #ff5e9e;
+            transform: scale(1.05);
         }
 
         .status {
-            font-size: 1.2em;
+            font-size: 1.3em;
             color: #ffde59;
-            margin-top: 10px;
+            margin-top: 15px;
             font-weight: bold;
             visibility: hidden;
         }
 
-        .footer-note {
-            margin-top: 20px;
-            font-size: 1em;
-            color: rgba(255, 255, 255, 0.7);
-            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-        }
-
         @media (max-width: 600px) {
-            .game-container {
-                width: 80%;
-            }
-
             h1 {
-                font-size: 1.8em;
+                font-size: 2em;
             }
 
             .skull {
@@ -128,41 +142,24 @@
 
             button {
                 font-size: 0.9em;
-                padding: 8px 16px;
-            }
-        }
-
-        @media (max-width: 400px) {
-            h1 {
-                font-size: 1.6em;
-            }
-
-            .skull {
-                width: 40px;
-                height: 40px;
-            }
-
-            button {
-                font-size: 0.8em;
-                padding: 7px 14px;
             }
         }
     </style>
 </head>
 <body>
     <div class="animated-background"></div>
+    <div class="snow-container"></div>
+
     <div class="game-container">
         <h1>Brawl Pirates</h1>
         <div class="skull-container">
-            <div id="skull1" class="skull"><img src="images/skull1.png" alt="Череп 1" width="50" height="50"></div>
-            <div id="skull2" class="skull"><img src="images/skull2.png" alt="Череп 2" width="50" height="50"></div>
-            <div id="skull3" class="skull"><img src="images/skull3.png" alt="Череп 3" width="50" height="50"></div>
+            <div id="skull1" class="skull"><img src="images/skull1.png" alt="Skull 1" width="50" height="50"></div>
+            <div id="skull2" class="skull"><img src="images/skull2.png" alt="Skull 2" width="50" height="50"></div>
+            <div id="skull3" class="skull"><img src="images/skull3.png" alt="Skull 3" width="50" height="50"></div>
         </div>
-        <div class="btn-container">
-            <button onclick="getSignal()">Получить сигнал</button>
-            <button onclick="goToMainMenu()">Вернуться в главное меню</button>
-        </div>
-        <div id="status" class="status">Ожидаем сигнал...</div>
+        <button onclick="getSignal()">Получить Сигнал</button>
+        <button onclick="goToMainMenu()">Вернуться в меню</button>
+        <div id="status" class="status">Ждем Сигнал...</div>
     </div>
 
     <script>
@@ -172,7 +169,7 @@
             const winnerIndex = Math.floor(Math.random() * 3);
 
             status.style.visibility = 'visible';
-            status.innerText = 'Ожидаем сигнал...';
+            status.innerText = 'Ждем Сигнал...';
 
             setTimeout(function() {
                 skulls.forEach((skull, index) => {
@@ -183,13 +180,29 @@
                 const winnerSkull = skulls[winnerIndex].querySelector('img');
                 winnerSkull.src = 'images/winner-skull.png';
 
-                status.innerText = 'Сигнал получен!';
+                status.innerText = 'Сигнал Получен!';
             }, 2000);
         }
 
         function goToMainMenu() {
             window.location.href = 'index.html';
         }
+
+        function createSnowflakes() {
+            const snowContainer = document.querySelector('.snow-container');
+            const numberOfFlakes = 50;
+            for (let i = 0; i < numberOfFlakes; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.className = 'snowflake';
+                snowflake.style.left = `${Math.random() * 100}vw`;
+                snowflake.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                snowflake.style.width = `${Math.random() * 8 + 4}px`;
+                snowflake.style.height = snowflake.style.width;
+                snowContainer.appendChild(snowflake);
+            }
+        }
+
+        createSnowflakes();
     </script>
 </body>
 </html>
